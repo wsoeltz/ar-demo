@@ -1,78 +1,33 @@
-<!DOCTYPE html>
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <title>Augmented Reality Demo</title>
-  <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+  <title>AR.js Basic Projected Camera Example</title>
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-  <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
-  <style>
-    .arjs-loader {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      background-color: rgba(0, 0, 0, 0.8);
-      z-index: 9999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+  <!-- Look-at component. We don't need this now, but we will later. -->
+  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  <script>
+    window.onload = () => {
+      const person = prompt("Please enter your name", "Person");
+      navigator.geolocation.getCurrentPosition((position) => {
+        const aText = document.querySelector('a-text');
+        aText.setAttribute('gps-entity-place', `latitude: ${position.coords.latitude + 0.0004}; longitude: ${position.coords.longitude + 0.0004};`)
+        aText.setAttribute('value', `Hello ${person}`)
+      });
     }
-  
-    .arjs-loader div {
-      text-align: center;
-      font-size: 1.25em;
-      color: white;
-    }
-  </style>
+  </script>
 </head>
-
-<body style="margin : 0px; overflow: hidden;">
-
-  <div class="arjs-loader">
-    <div>Loading, please wait...</div>
-  </div>
-
-  <a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false;'>
-
-    <!-- BEGIN LIST OF IMAGE MARKERS -->
-    <a-nft type="nft"
-      url="https://wsoeltz.github.io/ar-demo/assets/olive-oil"
-      smooth="true" smoothCount="10" smoothTolerance=".01" smoothThreshold="5">
-      <a-entity text-geometry="value: Olive Oil, $13.99" material="color: white" scale="18 18 18" position="0 0 -20" rotation="-120 0">
-    </a-nft>
-
-    <a-nft type="nft"
-      url="https://wsoeltz.github.io/ar-demo/assets/wheat-thins"
-      smooth="true" smoothCount="10" smoothTolerance=".01" smoothThreshold="5">
-      <a-entity text-geometry="value: Wheat Thins, $5.99" material="color: white" scale="18 18 18" position="0 0 -20" rotation="-120 0">
-    </a-nft>
-
-    <a-nft type="nft"
-      url="https://wsoeltz.github.io/ar-demo/assets/soy-sauce"
-      smooth="true" smoothCount="10" smoothTolerance=".01" smoothThreshold="5">
-      <a-entity text-geometry="value: Soy Sauce, $6.99" material="color: white" scale="18 18 18" position="0 0 -20" rotation="-120 0">
-    </a-nft>
-
-    <a-nft type="nft"
-      url="https://wsoeltz.github.io/ar-demo/assets/flour"
-      smooth="true" smoothCount="10" smoothTolerance=".01" smoothThreshold="5">
-      <a-entity text-geometry="value: Flour, $2.99" material="color: white" scale="18 18 18" position="0 0 -20" rotation="-120 0">
-    </a-nft>
-
-    <a-nft type="nft"
-      url="https://wsoeltz.github.io/ar-demo/assets/salt"
-      smooth="true" smoothCount="10" smoothTolerance=".01" smoothThreshold="5">
-      <a-entity text-geometry="value: Salt, $1.99" material="color: white" scale="18 18 18" position="0 0 -20" rotation="-120 0">
-    </a-nft>
-    <!-- END LIST OF IMAGE MARKERS -->
-
-    <a-entity camera></a-entity>
-
+<body>
+  <a-scene vr-mode-ui="enabled: false" arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false;'
+    renderer='antialias: true; alpha: false'>
+    <a-camera gps-projected-camera rotation-reader></a-camera>
+    <a-text
+      gps-projected-entity-place='latitude: 41.322345727519235; longitude: -72.90886950574456'
+      look-at="[gps-projected-camera]"
+      scale="5 5 5"
+    >
+    </a-text>
   </a-scene>
-
 </body>
 
 </html>
