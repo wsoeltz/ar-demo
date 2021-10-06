@@ -8,11 +8,11 @@
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
   <script>
     window.onload = () => {
-      const person = prompt("Please enter your name", "Person");
       navigator.geolocation.getCurrentPosition((position) => {
         const aText = document.querySelector('a-text');
-        aText.setAttribute('gps-entity-place', `latitude: ${position.coords.latitude + 0.0004}; longitude: ${position.coords.longitude + 0.0004};`)
-        aText.setAttribute('value', `Hello ${person}`)
+        const latitude = position.coords.latitude - 0.0001;
+        const longitude = position.coords.longitude - 0.0001;
+        aText.setAttribute('gps-projected-entity-place', `latitude: ${latitude}; longitude: ${longitude};`)
       });
     }
   </script>
@@ -22,9 +22,9 @@
     renderer='antialias: true; alpha: false'>
     <a-camera gps-projected-camera rotation-reader></a-camera>
     <a-text
-      gps-projected-entity-place='latitude: 41.322345727519235; longitude: -72.90886950574456'
       look-at="[gps-projected-camera]"
       scale="5 5 5"
+      value="Hello world"
     >
     </a-text>
   </a-scene>
