@@ -13,13 +13,28 @@
         const latitude = position.coords.latitude - 0.0001;
         const longitude = position.coords.longitude - 0.0001;
         aText.setAttribute('gps-projected-entity-place', `latitude: ${latitude}; longitude: ${longitude};`)
+        let clickThrottle = 0;
+        aText.addEventListener('click', () => {
+          if (clickThrottle === 0) {
+            const val = aText.getAttribute('value');
+            if (val === 'Hello World') {
+              aText.setAttribute('value', 'Goodbye World!')
+            } else {
+              aText.setAttribute('value', 'Hello World')
+            }
+            clickThrottle = 1;
+            setTimeout(() => {
+              clickThrottle = 0;
+            }, (400));
+          }
+        })
       });
     }
   </script>
 </head>
 <body>
   <a-scene vr-mode-ui="enabled: false" arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false;'
-    renderer='antialias: true; alpha: false'>
+    renderer='antialias: true; alpha: false' cursor="rayOrigin: mouse">
     <a-camera gps-projected-camera rotation-reader></a-camera>
     <a-text
       look-at="[gps-projected-camera]"
